@@ -58,6 +58,29 @@
     2 - Cuando quieras aniadir o eliminar un producto, en el apartado "Authorization" ingresa el token via Bearer token y vas a tener acceso.
 
 
+** EJEMPLOS DE ENDPOINTS PARA LOS PRODUCTOS **
+
+http://localhost:8888/tpe2/api/product ((GET PARA TODOS LOS PRODUCTOS))
+
+http://localhost:8888/tpe2/api/product/1 ((GET PARA UN SOLO PRODUCTO))
+
+http://localhost:8888/tpe2/api/product?sort=ASC&column=precio ((GET DE UN PRODUCTO ORDENADO ASCENDENTE SEGUN SU CAMPO PRECIO))
+
+http://localhost:8888/tpe2/api/product/1    ((DELETE DEL PRODUCTO 1))
+
+http://localhost:8888/tpe2/api/product (( ADD DE UN PRODUCTO))
+
+    {
+    "nombre" : "TEST",
+    "precio" : 111,
+    "id_categoriaFK" : 1,
+    "descripcion" : "TEST"
+    }
+
+
+** EJEMPLOS DE ENDPOINTS PARA EL TOKEN DE USUARIO**
+
+http://localhost:8888/tpe2/api/auth/token   ((USER: admin PASSW: admin))
 
 
 

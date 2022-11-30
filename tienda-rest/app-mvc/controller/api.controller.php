@@ -25,18 +25,24 @@ class ApiController{
         return json_decode($this->data);
     }
 
-    public function getAllProducts($params = null) {
-        
+    public function getAllProducts($params=null){
+
         if(!empty($_GET['sort']) && !empty($_GET['column'])){
             $sort = $_GET['sort'];
             $column = $_GET['column'];
-            $products = $this->model->getAllProducts($sort, $column);
-        }else{
+                if(($sort == 'ASC' || $sort == 'DESC') && ($column == 'id_producto' || $column == 'nombre' || $column == 'precio' || $column == 'descripcion')){
+                    $products = $this->model->getAllProducts($column, $sort);
+                    $this->view->response($products, 200);
+                }
+        }else if(empty($_GET['sort']) && empty($_GET['column'])){
             $products = $this->model->getAllProducts();
+            $this->view->response($products, 200);
+        }else{
+            $this->view->response("Error en los parametros", 501);
         }
-
-        $this->view->response($products, 200);
+       
     }
+
 
     public function getProduct($params = null) {
         $id = $params[':ID'];
@@ -45,7 +51,7 @@ class ApiController{
         if ($product) {
             $this->view->response($product);
         } else {
-            $this->view->response("El producto con el id=$id no existe", 404);
+            $this->view->response("El producto con el id=$id no existe, o el parametro es invalido", 404);
         }
     }
 
@@ -54,8 +60,8 @@ class ApiController{
         if($this->helper->isLoggedIn()){
             $body = $this->getData();
      
-            if(empty($body->nombre) || empty($body->precio) || empty($body->id_categoriaFK) || empty($body->descripcion)){
-                $this->view->response("Alguno de los datos esta vacio (nombre, precio, id categoria, descripcion.)");
+            if(empty($body->nombre) || empty($body->precio) || !is_numeric($body->precio) || empty($body->id_categoriaFK) || is_numeric($body->id_categoriaFK) || empty($body->descripcion)){
+                $this->view->response("Algun valor ingresado es invalido o alguno de los datos esta vacio (nombre, precio, id categoria, descripcion.)");
             }else{
                 $product = $this->model->addProduct($body->nombre, $body->precio, $body->id_categoriaFK, $body->descripcion);
                 $this->view->response("El producto: $body->nombre fue aniadido.", 201);

@@ -8,7 +8,7 @@ class ApiModel{
         $this->db = new PDO('mysql:host=localhost;'.'dbname=web2_tiendaderopa;charset=utf8', 'root', 'admin2022');        
     }
 
-    public function getAllProducts($sort = "", $column = "null"){
+    public function getAllProducts($column = "null", $sort = ""){
 
         if(isset($sort) && isset($column)){
             $query = $this->db->prepare('SELECT * FROM producto ORDER BY '.$column.' '.$sort);
@@ -39,9 +39,8 @@ class ApiModel{
             
             return $array_product;
         }
-
-
     }
+
 
     // API ABM product
 
